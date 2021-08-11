@@ -1,0 +1,168 @@
+<section class="u-align-center u-clearfix u-section-1" id="sec-d7d7">
+  <div class="row" style="height:1200px; border: solid black 1px margin-top:10px; margin-bottom:10px; ">
+    <hr style="background-color:black" />
+
+    <div class="u-clearfix u-sheet u-sheet-1">
+      <div class="u-expanded-width u-table u-table-responsive u-table-1">
+        <div>
+          <span style="display: inline;  vertical-align: middle; float: left;">
+            <h2 style="text-align: left;">Dustbin List</h2>
+          </span>
+          <span style="display: inline;  vertical-align: middle; float: right;">
+            <button
+              class="u-btn u-btn-round u-btn-submit u-button-style u-custom-color-5 u-custom-font u-font-raleway u-radius-10 u-btn-1"
+              (click)="open(content)">Add
+            </button>
+          </span>
+        </div>
+
+        <table class="u-table-entity u-table-entity-1" style="margin-bottom: 10%">
+          <colgroup>
+            <colgroup _ngcontent-vog-c16="">
+              <col _ngcontent-vog-c16="" width="6.1%">
+              <col _ngcontent-vog-c16="" width="14.7%">
+              <col _ngcontent-vog-c16="" width="10.2%">
+              <col _ngcontent-vog-c16="" width="20.2%">
+              <col _ngcontent-vog-c16="" width="18.%">
+            </colgroup>
+          </colgroup>
+          <thead class="u-grey-50 u-table-header u-table-header-1">
+            <tr style="height: 21px;">
+              <th class="u-border-1 u-border-grey-50 u-table-cell">#</th>
+              <th class="u-border-1 u-border-grey-50 u-table-cell">NAME</th>
+              <th class="u-border-1 u-border-grey-50 u-table-cell">STATUS</th>
+              <th class="u-border-1 u-border-grey-50 u-table-cell">LOCATION</th>
+              <th class="u-border-1 u-border-grey-50 u-table-cell"></th>
+            </tr>
+          </thead>
+          <tbody class="u-table-body">
+            <tr *ngFor="let dustbin of dusbinList" style="height:100px;">
+              <td class="u-border-1 u-border-grey-40 u-border-no-left u-border-no-right u-table-cell"></td>
+              <td class="u-border-1 u-border-grey-40 u-border-no-left u-border-no-right u-table-cell">{{dustbin.name}}
+              </td>
+              <td class="u-border-1 u-border-grey-40 u-border-no-left u-border-no-right u-table-cell">{{dustbin.status}}
+              </td>
+              <td class="u-border-1 u-border-grey-40 u-border-no-left u-border-no-right u-table-cell">
+                {{dustbin.location}}
+              </td>
+              <td class="u-border-1 u-border-grey-40 u-border-no-left u-border-no-right u-table-cell">
+
+                <!--Delete button-->
+                <button (click)="deleteDustbin(dustbin._id)"
+                  class="u-btn u-btn-round u-btn-submit u-button-style u-custom-color-5 u-custom-font u-font-raleway u-radius-10 u-btn-1">
+                  Delete
+                </button>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+
+                <!-- Update button-->
+                <button
+                  class="u-btn u-btn-round u-btn-submit u-button-style u-custom-color-5 u-custom-font u-font-raleway u-radius-10 u-btn-1"
+                  (click)="open(content2)" (click)="getUpdateData(dustbin)">Update
+                </button>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+
+      <!-- Modal Dustbin Add -->
+      <ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Add Dustbin</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #dustbinAddForm="ngForm" (ngSubmit)="addDustbin(dustbin)">
+            <div class="form-group">
+
+              <!-- Dustbin name -->
+              <label for="name" class="control-label">Dustbin Name</label>
+              <div class="input-group">
+                <input id="name" [(ngModel)]="dustbin.name" class="form-control" placeholder="" name="name" type="text"
+                  #nameControl="ngModel" required>
+              </div>
+              <div class="text-danger" *ngIf="nameControl.touched && nameControl.invalid">Dustbin Name is Required*
+              </div>
+
+              <br>
+
+              <!-- Dustbin Location -->
+              <label for="location">Location</label>
+              <div class="input-group">
+                <input id="location" [(ngModel)]="dustbin.location" class="form-control" placeholder="" name="location"
+                  #dustbinControl="ngModel" required>
+              </div>
+              <div style="display: block;" class="text-danger" *ngIf="dustbinControl.touched && dustbinControl.invalid">
+                Dustbin Location is Required*</div>
+              <br>
+
+              <div class="modal-footer">
+                <input type="submit" class="btn btn-outline-dark" value="Add">
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </ng-template>
+
+
+      <!-- Modal Dustbin Update -->
+      <ng-template #content2 let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Update Dustbin</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #dustbinUpdateForm="ngForm" (ngSubmit)="onUpdateClick(dustbinUpdateInput)">
+            <div class="form-group">
+              <!-- <input id="id" [(ngModel)]="dustbin._id" class="form-control" placeholder="" name="id" type="text" #idControl2 = "ngModel" required> -->
+              <!-- Dustbin name -->
+              <label for="name" class="control-label">Dustbin Name</label>
+              <div class="input-group">
+                <input id="name" [(ngModel)]="dustbinUpdateInput.name" class="form-control" placeholder="" name="name"
+                  type="text" #nameControl2="ngModel" required>
+              </div>
+              <div class="text-danger" *ngIf="nameControl2.touched && nameControl2.invalid">Dustbin Name is Required*
+              </div>
+
+              <br>
+
+              <!-- Dustbin Location -->
+              <label for="location">Location</label>
+              <div class="input-group">
+                <input id="location" [(ngModel)]="dustbinUpdateInput.location" class="form-control" placeholder=""
+                  name="location" #locationControl2="ngModel" required>
+              </div>
+              <div style="display: block;" class="text-danger"
+                *ngIf="locationControl2.touched && locationControl2.invalid">Dustbin Location is Required*</div>
+              <br>
+
+              <!-- Dustbin status -->
+              <label for="dustbinStatus">Dustbin Status</label>
+              <div class="input-group">
+                <select class="form-control" name="status" [(ngModel)]="dustbinUpdateInput.status" id="status">
+                  <option value="FULL">FULL</option>
+                  <option value="EMPTY">EMPTY</option>
+                </select>
+              </div><br>
+              <div class="modal-footer">
+                <!-- (click)="modal.close('Save click')" -->
+                <input type="submit" class="btn btn-outline-dark" value="Update">
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</section>
